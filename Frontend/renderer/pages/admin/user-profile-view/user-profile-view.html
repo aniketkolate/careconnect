@@ -1,0 +1,85 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+
+  <title>CareConnect – User Profile</title>
+  <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;500;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="user-profile-view.css">
+</head>
+
+<body>
+
+  <!-- Sidebar -->
+  <div class="sidebar">
+    <div class="logo-wrap">
+      <div class="logo">CareConnect</div>
+      <div class="logo-sub">Admin Dashboard</div>
+    </div>
+    <div class="nav">
+      <a href="../dashboard/dashboard.html">Dashboard</a>
+      <a href="../assignment/assignment.html">Assign Caretaker</a>
+      <a href="../careseekers-list/careseekers-list.html">Care Seekers</a>
+      <a href="../caretakers-list/caretakers-list.html">Care Takers</a>
+    </div>
+
+    <div class="logout" onclick="logout()">Logout</div>
+  </div>
+
+  <!-- Main -->
+  <div class="main">
+    <div class="header">
+      <h2>User Profile</h2>
+      <div class="admin-name">Admin</div>
+    </div>
+
+    <div class="profile-layout">
+
+      <!-- Left -->
+      <div class="profile-card">
+        <div class="avatar" id="avatar">?</div>
+        <h3 id="nameText">--</h3>
+        <div class="role" id="roleText">--</div>
+        <span id="statusBadge" class="status">--</span>
+      </div>
+
+      <!-- Right -->
+      <div class="details-card">
+
+        <div class="section">
+          <h4>Account Information</h4>
+          <div class="info-grid">
+            <div class="info">
+              <div class="label">Email</div>
+              <div class="value" id="email">--</div>
+            </div>
+            <div class="info">
+              <div class="label">Phone</div>
+              <div class="value" id="phone">--</div>
+            </div>
+            <div class="info">
+              <div class="label">Created At</div>
+              <div class="value" id="createdAt">--</div>
+            </div>
+          </div>
+        </div>
+
+        <div class="section" id="profileSection">
+          <!-- role-based profile details injected here -->
+        </div>
+
+        <div class="actions">
+          <button class="btn" onclick="history.back()">Back</button>
+        </div>
+
+      </div>
+
+    </div>
+  </div>
+
+  <script src="../../../js/api.js"></script>
+  <script src="./user-profile-view.js"></script>
+</body>
+
+</html>

@@ -1,0 +1,499 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+
+  
+  <title>CareConnect – Assigned Caretakers</title>
+
+  <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;500;700&display=swap" rel="stylesheet">
+
+
+  <style>
+    * {
+
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+      font-family: 'Roboto', sans-serif;
+    }
+
+    /* For Chrome, Edge, Safari */
+    ::-webkit-scrollbar {
+      width: 6px;
+      height: 6px;
+    }
+
+    ::-webkit-scrollbar-track {
+      background: transparent;
+    }
+
+    ::-webkit-scrollbar-thumb {
+      background-color: rgba(0, 0, 0, 0.25);
+      border-radius: 10px;
+    }
+
+    ::-webkit-scrollbar-thumb:hover {
+      background-color: rgba(0, 0, 0, 0.4);
+    }
+
+    /* Firefox */
+    * {
+      scrollbar-width: thin;
+      scrollbar-color: rgba(0, 0, 0, 0.3) transparent;
+    }
+
+    body {
+      height: 100vh;
+      background: #f4f7fc;
+      display: flex;
+      color: #333;
+    }
+
+    /* ========== SIDEBAR (UNCHANGED) ========== */
+    .sidebar {
+      width: 240px;
+      background: linear-gradient(180deg, #4e8cff, #00c6ff);
+      color: #fff;
+      padding: 25px 20px;
+      display: flex;
+      flex-direction: column;
+    }
+
+    .logo-wrap {
+      text-align: center;
+      margin-bottom: 40px;
+      letter-spacing: 0.5px;
+    }
+
+    .logo {
+      font-size: 22px;
+      font-weight: 700;
+    }
+
+    .logo-sub {
+      margin-top: 6px;
+      font-size: 0.75rem;
+      opacity: 0.85;
+      letter-spacing: 0.8px;
+      text-transform: uppercase;
+    }
+
+    .nav a {
+      display: block;
+      padding: 12px 15px;
+      border-radius: 10px;
+      color: #fff;
+      text-decoration: none;
+      margin-bottom: 10px;
+    }
+
+    .nav a.active,
+    .nav a:hover {
+      background: rgba(255, 255, 255, 0.22);
+    }
+
+    /* ========== MAIN ========== */
+    .main {
+      flex: 1;
+      padding: 28px 32px;
+      overflow-y: auto;
+    }
+
+    .header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 26px;
+    }
+
+    .header h2 {
+      font-size: 1.4rem;
+      font-weight: 700;
+    }
+
+    .logout {
+      margin-top: auto;
+      padding: 10px;
+      background: rgba(255, 255, 255, 0.15);
+      border-radius: 8px;
+      text-align: center;
+      cursor: pointer;
+    }
+
+    .logout:hover {
+      background: rgba(255, 255, 255, 0.3);
+    }
+
+
+    /* ========== LAYOUT ========== */
+    .layout {
+      display: grid;
+      grid-template-columns: 400px 1fr;
+      gap: 24px;
+    }
+
+    /* ========== REQUEST LIST ========== */
+    .request-list {
+      background: #ffffff;
+      border-radius: 16px;
+      padding: 18px;
+      box-shadow: 0 10px 22px rgba(0, 0, 0, 0.07);
+    }
+
+    .request-list h3 {
+      font-size: 0.95rem;
+      font-weight: 600;
+      margin-bottom: 14px;
+      color: #444;
+    }
+
+    #requestList {
+      max-height: 560px;
+      overflow-y: auto;
+      height: 100%;
+    }
+
+    .request-item {
+      background: #f8faff;
+      border-radius: 14px;
+      padding: 14px 16px;
+      margin-bottom: 12px;
+      cursor: pointer;
+      transition: 0.2s ease;
+      border: 1px solid transparent;
+    }
+
+    .request-item:hover {
+      background: #eef3ff;
+    }
+
+    .request-item.active {
+      background: #e8efff;
+      border-color: #4e8cff;
+    }
+
+    .request-title {
+      font-weight: 600;
+      margin-bottom: 4px;
+    }
+
+    .request-meta {
+      font-size: 0.75rem;
+      color: #666;
+    }
+
+    .status {
+      display: inline-block;
+      margin-top: 6px;
+      padding: 4px 10px;
+      border-radius: 999px;
+      font-size: 0.7rem;
+      font-weight: 600;
+    }
+
+    /* Status colors */
+    .CREATED {
+      background: #e0e7ff;
+      color: #3730a3;
+    }
+
+    .ASSIGNED {
+      background: #dbeafe;
+      color: #1e40af;
+    }
+
+    .PENDING_ACCEPTANCE {
+      background: #fff4e5;
+      color: #d97706;
+    }
+
+    .ONGOING {
+      background: #eef3ff;
+      color: #3563e9;
+    }
+
+    .COMPLETED {
+      background: #e6f8f1;
+      color: #1c9c6b;
+    }
+
+    .CANCELLED {
+      background: #fee2e2;
+      color: #991b1b;
+    }
+
+    /* ========== DETAILS PANEL ========== */
+    .details {
+      background: #fff;
+      border-radius: 18px;
+      padding: 26px;
+      box-shadow: 0 12px 28px rgba(0, 0, 0, 0.08);
+      min-height: 360px;
+    }
+
+    .empty-state {
+      height: 100%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      flex-direction: column;
+      text-align: center;
+      padding: 20px;
+      color: #64748b;
+      font-size: 0.9rem;
+    }
+
+    /* ========== DETAIL CARD ========== */
+    .card-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 18px;
+    }
+
+    .section {
+      margin-top: 24px;
+    }
+
+    .section-title {
+      font-size: 0.95rem;
+      margin-bottom: 12px;
+      color: #333;
+    }
+
+    .info-grid {
+      display: grid;
+      grid-template-columns: repeat(2, 1fr);
+      gap: 14px;
+    }
+
+    .info {
+      background: #f8fafc;
+      padding: 14px;
+      border-radius: 12px;
+    }
+
+    .label {
+      font-size: 0.75rem;
+      color: #777;
+    }
+
+    .value {
+      font-weight: 600;
+      margin-top: 4px;
+    }
+
+    .status-badge {
+      padding: 6px 14px;
+      border-radius: 20px;
+      font-size: 0.75rem;
+      font-weight: 600;
+    }
+
+    .status-badge.COMPLETED {
+      background: #e6f8f1;
+      color: #1c9c6b;
+    }
+
+    .status-badge.ONGOING {
+      background: #eef3ff;
+      color: #3563e9;
+    }
+
+    .status-badge.PENDING_ACCEPTANCE {
+      background: #fff4e5;
+      color: #d97706;
+    }
+
+    .status-badge.CANCELLED {
+      background: #fdecec;
+      color: #dc2626;
+    }
+
+    .caretaker-card {
+      display: flex;
+      gap: 16px;
+      background: linear-gradient(135deg, #f3f7ff, #ffffff);
+      padding: 16px;
+      border-radius: 14px;
+    }
+
+    .avatar {
+      width: 56px;
+      height: 56px;
+      border-radius: 50%;
+      background: #4e8cff;
+      color: #fff;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-weight: 700;
+      font-size: 1.3rem;
+      overflow: hidden;
+    }
+
+    .avatar img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+    }
+
+    .caretaker-info h3 {
+      margin: 0;
+    }
+
+    .caretaker-header {
+      display: flex;
+      align-items: baseline;
+      gap: 10px;
+    }
+
+    .verified {
+      background: #e6f8f1;
+      color: #1c9c6b;
+      font-size: 0.7rem;
+      padding: 3px 8px;
+      border-radius: 12px;
+    }
+
+    .caretaker-meta,
+    .caretaker-extra {
+      margin-top: 6px;
+      font-size: 0.85rem;
+      color: #555;
+      display: flex;
+      gap: 20px;
+    }
+
+
+    .divider {
+      height: 1px;
+      background: #eee;
+      margin: 22px 0;
+    }
+
+    /* ===== CARETAKER PROFILE CARD (VERTICAL, CLEAN) ===== */
+
+    /* Avatar */
+    .caretaker-card .avatar {
+      width: 88px;
+      height: 88px;
+      min-width: 88px;
+      /* important */
+      min-height: 88px;
+      /* important */
+
+      border-radius: 50%;
+      aspect-ratio: 1 / 1;
+      /* ensures perfect square */
+
+      background: linear-gradient(135deg, #4e8cff, #00b4ff);
+      color: #fff;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 32px;
+      font-weight: 700;
+      line-height: 1;
+      box-sizing: border-box;
+    }
+
+
+    /* Name */
+    .caretaker-card h3 {
+      font-size: 1.1rem;
+      font-weight: 600;
+      color: #111827;
+      margin-bottom: 12px;
+    }
+
+    /* Info container (phone + email) */
+    .caretaker-card>div:last-child {
+      width: 100%;
+      padding-top: 14px;
+      border-top: 1px dashed #e5e7eb;
+    }
+
+    /* Phone & Email */
+    .caretaker-card p {
+      font-size: 0.85rem;
+      color: #4b5563;
+
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 6px;
+
+      margin-bottom: 10px;
+    }
+
+    /* Spacing utility (if already used elsewhere) */
+    .mb-10 {
+      margin-bottom: 10px;
+    }
+
+
+    .mb-10 {
+      margin-bottom: 10px;
+    }
+
+    @keyframes fadeIn {
+      from {
+        opacity: 0;
+        transform: translateY(6px);
+      }
+
+      to {
+        opacity: 1;
+        transform: translateY(0);
+      }
+    }
+  </style>
+</head>
+
+<body>
+
+  <!-- Sidebar -->
+  <div class="sidebar">
+    <div class="logo-wrap">
+      <div class="logo">CareConnect</div>
+      <div class="logo-sub">Care Seeker Dashboard</div>
+    </div>
+    <div class="nav">
+      <a href="../dashboard/dashboard.html">Dashboard</a>
+      <a href="../careseeker-requests/careseeker-requests.html">My Requests</a>
+      <a class="active" href="#">Assigned Caretakers</a>
+      <a href="../make-payment/make-payment.html">Payment</a>
+      <a href="../careseeker-profile/careseeker-profile.html">Profile</a>
+    </div>
+    <div class="logout" onclick="logout()">Logout</div>
+
+  </div>
+
+  <!-- Main -->
+  <div class="main">
+    <div class="header">
+      <h2>Assigned Caretakers</h2>
+    </div>
+
+    <div class="layout">
+      <div class="request-list">
+        <h3>My Care Requests</h3>
+        <div id="requestList"></div>
+      </div>
+
+      <div class="details" id="detailsPanel">
+        <div class="empty-state">
+          Select a care request to view details
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <script src="../../../js/api.js"></script>
+  <script src="./assigned-caretaker.js"></script>
+</body>
+
+</html>

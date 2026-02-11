@@ -1,0 +1,100 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+
+  
+  <title>CareConnect – Care Taker Profile</title>
+
+  <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;500;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="./profile.css">
+
+</head>
+
+<body>
+
+  <div class="sidebar">
+    <div class="logo-wrap">
+      <div class="logo">CareConnect</div>
+      <div class="logo-sub">Care Taker Dashboard</div>
+    </div>
+    <div class="nav">
+      <a href="../dashboard/dashboard.html">Dashboard</a>
+      <a href="../assigned-requests/assigned-requests.html">Assigned Requests</a>
+      <a href="../availability/availability.html">Availability</a>
+      <a class="active" href="#">Profile</a>
+    </div>
+    <div class="logout" onclick="logout()">Logout</div>
+  </div>
+
+  <div class="main">
+    <div class="header">
+      <h2>My Profile</h2>
+    </div>
+
+    <div class="profile-layout">
+
+      <!-- LEFT -->
+      <div class="card profile-summary">
+        <div class="avatar" id="avatar">A</div>
+        <h4 id="nameText">-</h4>
+        <p id="emailText">-</p>
+        <span class="badge incomplete" id="profileBadge">Profile Incomplete</span>
+        <button id="editBtn" class="btn primary" onclick="enableEdit()">Edit Profile</button>
+      </div>
+
+      <!-- RIGHT -->
+      <div class="card readonly" id="profileForm">
+        <div class="section-title">Personal & Professional Details</div>
+
+        <div class="form-grid">
+
+          <div class="field" style="grid-column: span 2;">
+            <label>Full Name</label>
+            <input id="nameInput" type="text">
+          </div>
+
+          <div class="field">
+            <label>Phone</label>
+            <input id="phoneInput" type="text">
+          </div>
+
+          <div class="field">
+            <label>Experience (Years)</label>
+            <input id="experience" type="number">
+          </div>
+
+          <div class="field">
+            <label>Hourly Rate (₹)</label>
+            <input id="hourlyRate" type="number">
+          </div>
+
+          <div class="field">
+            <label>Profile Image URL</label>
+            <input id="profileImage" type="text">
+          </div>
+
+          <div class="field" style="grid-column: span 2;">
+            <label>Skills</label>
+            <textarea id="skills" rows="3"></textarea>
+          </div>
+
+
+        </div>
+
+        <div class="action-bar" id="actionBar">
+          <button class="btn primary" onclick="saveProfile()">Save Changes</button>
+          <button class="btn secondary" onclick="cancelEdit()">Cancel</button>
+        </div>
+      </div>
+
+    </div>
+  </div>
+
+  <script src="../../../js/api.js"></script>
+  <script src="./profile.js"></script>
+
+</body>
+
+</html>

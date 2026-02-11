@@ -1,0 +1,117 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+
+  
+  <title>CareConnect – Caretaker Dashboard</title>
+  <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;500;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="dashboard.css">
+</head>
+
+<body>
+
+  <!-- Sidebar -->
+  <div class="sidebar">
+    <div class="logo-wrap">
+      <div class="logo">CareConnect</div>
+      <div class="logo-sub">Care Taker Dashboard</div>
+    </div>
+    <div class="nav">
+      <a class="active">Dashboard</a>
+      <a href="../assigned-requests/assigned-requests.html">Assigned Requests</a>
+      <a href="../availability/availability.html">Availability</a>
+      <a href="../profile/profile.html">Profile</a>
+    </div>
+    <div class="logout" onclick="logout()">Logout</div>
+  </div>
+
+  <!-- Main -->
+  <div class="main">
+
+    <!-- Header -->
+    <div class="header">
+      <h2>Hello, Caretaker 👋</h2>
+    </div>
+
+    <!-- Summary -->
+    <div class="summary-strip">
+      <div class="summary">
+        <h3 id="totalAssignments">0</h3>
+        <p>Total Assignments</p>
+      </div>
+      <div class="summary">
+        <h3 id="activeAssignments">0</h3>
+        <p>Active Care</p>
+      </div>
+      <div class="summary">
+        <h3 id="completedAssignments">0</h3>
+        <p>Completed</p>
+      </div>
+      <div class="summary">
+        <h3 id="monthlyEarnings">₹0</h3>
+        <p>This Month Earnings</p>
+      </div>
+    </div>
+    <!-- Dashboard Body -->
+    <div class="dashboard">
+
+      <!-- LEFT -->
+      <div>
+
+        <!-- Today Tasks -->
+        <div class="card">
+          <h3>Today’s Care Schedule</h3>
+          <div id="todaySchedule">
+            <!-- Dynamic rows will be injected here -->
+          </div>
+        </div>
+
+        <!-- Pending Assignments -->
+        <div class="card">
+          <h3>Pending Assignments</h3>
+          <table>
+            <thead>
+              <tr>
+                <th>Care Seeker</th>
+                <th>Care Type</th>
+                <th>Status</th>
+                <th>Action</th>
+              </tr>
+            </thead>
+            <tbody id="pendingAssignmentsBody">
+              <!-- Dynamic rows will be injected here -->
+            </tbody>
+          </table>
+        </div>
+
+      </div>
+
+      <!-- RIGHT -->
+      <div>
+
+        <!-- Notifications -->
+        <div class="card">
+          <h3 class="divider">Notifications</h3>
+          <div class="no-notification">No notifications to display</div>
+          <!-- <div class="notification">✔ New assignment request received</div>
+          <div class="notification">⏰ Reminder: Care visit at 2 PM</div>
+          <div class="notification">✔ Payment credited</div>
+          <div class="notification">✔ New assignment request received</div>
+          <div class="notification">⏰ Reminder: Care visit at 2 PM</div>
+          <div class="notification">✔ Payment credited</div>
+          <div class="notification">⏰ Reminder: Care visit at 2 PM</div>
+          <div class="notification">⏰ Reminder: Care visit at 2 PM</div> -->
+        </div>
+      </div>
+
+    </div>
+
+  </div>
+  <script src="../../../js/api.js"></script>
+  <script src="./dashboard.js"></script>
+
+</body>
+
+</html>

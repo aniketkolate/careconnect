@@ -1,0 +1,511 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+
+  
+  <title>CareConnect - Make Payment</title>
+  <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;500;700&display=swap" rel="stylesheet">
+
+  <style>
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+      font-family: 'Roboto', sans-serif;
+    }
+
+    body {
+      height: 100vh;
+      background: #f4f7fc;
+      display: flex;
+      overflow: hidden;
+    }
+
+    /* Sidebar */
+    .sidebar {
+      width: 240px;
+      background: linear-gradient(180deg, #4e8cff, #00c6ff);
+      color: #fff;
+      padding: 25px 20px;
+      display: flex;
+      flex-direction: column;
+    }
+
+    .logo-wrap {
+      text-align: center;
+      margin-bottom: 40px;
+    }
+
+    .logo {
+      font-size: 22px;
+      font-weight: 700;
+      letter-spacing: 0.5px;
+    }
+
+    .logo-sub {
+      margin-top: 6px;
+      font-size: 0.75rem;
+      font-weight: 500;
+      color: rgba(255, 255, 255, 0.85);
+      letter-spacing: 0.8px;
+      text-transform: uppercase;
+    }
+
+
+    .nav a {
+      display: block;
+      padding: 12px 15px;
+      border-radius: 8px;
+      color: #fff;
+      text-decoration: none;
+      margin-bottom: 10px;
+    }
+
+    .nav a.active,
+    .nav a:hover {
+      background: rgba(255, 255, 255, 0.2);
+    }
+
+    /* Main */
+    .main {
+      flex: 1;
+      padding: 25px 30px;
+      overflow-y: auto;
+    }
+
+    .header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 25px;
+    }
+
+    .logout {
+      margin-top: auto;
+      padding: 10px;
+      background: rgba(255, 255, 255, 0.15);
+      border-radius: 8px;
+      text-align: center;
+      cursor: pointer;
+    }
+
+    .logout:hover {
+      background: rgba(255, 255, 255, 0.3);
+    }
+
+
+    .header h2 {
+      color: #333;
+      font-weight: 700;
+    }
+
+    .header-title {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+    }
+
+
+    .card {
+      background: #fff;
+      border-radius: 16px;
+      padding: 20px;
+      box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
+    }
+
+    table {
+      width: 100%;
+      border-collapse: collapse;
+    }
+
+    th,
+    td {
+      padding: 14px;
+      text-align: left;
+    }
+
+    th {
+      background: #f1f5f9;
+    }
+
+    tr {
+      border-bottom: 1px solid #eee;
+    }
+
+    .status {
+      padding: 4px 12px;
+      border-radius: 14px;
+      font-size: 0.75rem;
+      font-weight: 500;
+      display: inline-block;
+    }
+
+    .paid {
+      background: #e3f7ee;
+      color: #1c9c6b;
+    }
+
+    .pending {
+      background: #fff2e0;
+      color: #d9822b;
+    }
+
+    .pay-btn {
+      background: #4e8cff;
+      color: #fff;
+      border: none;
+      padding: 6px 14px;
+      border-radius: 6px;
+      cursor: pointer;
+    }
+
+    .pay-btn:hover {
+      background: #3a6ed9;
+    }
+
+    /* =========================
+   PAYMENT POPUP – PRO UI
+   ========================= */
+
+.payment-overlay {
+  position: fixed;
+  inset: 0;
+  background: rgba(15, 23, 42, 0.6);
+  backdrop-filter: blur(6px);
+  display: none;
+  align-items: center;
+  justify-content: center;
+  z-index: 1000;
+}
+
+/* Card */
+.payment-card {
+  width: 440px;
+  max-width: 92%;
+  background: #ffffff;
+  border-radius: 20px;
+  box-shadow: 0 30px 60px rgba(0, 0, 0, 0.25);
+  animation: popupIn 0.25s ease;
+}
+
+/* Animation */
+@keyframes popupIn {
+  from {
+    opacity: 0;
+    transform: translateY(20px) scale(0.97);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0) scale(1);
+  }
+}
+
+/* Header */
+.payment-header {
+  padding: 20px 22px;
+  border-bottom: 1px solid #e5e7eb;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.payment-header h3 {
+  font-size: 18px;
+  color: #0f172a;
+}
+
+.subtitle {
+  font-size: 0.8rem;
+  color: #64748b;
+  margin-top: 2px;
+}
+
+/* Close */
+.close-btn {
+  background: none;
+  border: none;
+  font-size: 26px;
+  color: #64748b;
+  cursor: pointer;
+}
+
+.close-btn:hover {
+  color: #0f172a;
+}
+
+/* Body */
+.payment-body {
+  padding: 22px;
+}
+
+/* Amount */
+.payment-amount {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  background: #f8fafc;
+  border: 1px solid #e2e8f0;
+  padding: 14px 16px;
+  border-radius: 14px;
+  margin-bottom: 18px;
+}
+
+.payment-amount span {
+  font-size: 0.85rem;
+  color: #64748b;
+}
+
+.payment-amount strong {
+  font-size: 1.4rem;
+  color: #16a34a;
+}
+
+/* Payment methods */
+.payment-methods {
+  display: grid;
+  gap: 12px;
+  margin-bottom: 16px;
+}
+
+.payment-method input {
+  display: none;
+}
+
+.method-box {
+  display: flex;
+  gap: 14px;
+  align-items: center;
+  padding: 14px 16px;
+  border-radius: 14px;
+  background: #f8fafc;
+  border: 1px solid #e2e8f0;
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+
+.method-icon {
+  font-size: 22px;
+}
+
+.method-title {
+  font-weight: 600;
+  color: #0f172a;
+}
+
+.method-sub {
+  font-size: 0.75rem;
+  color: #64748b;
+}
+
+.payment-method input:checked + .method-box {
+  border-color: #4e8cff;
+  background: #eef4ff;
+}
+
+/* Forms */
+.payment-form {
+  display: grid;
+  gap: 12px;
+}
+
+.payment-form input {
+  padding: 12px 14px;
+  border-radius: 12px;
+  border: 1px solid #e2e8f0;
+  background: #f8fafc;
+  font-size: 0.85rem;
+}
+
+.form-row {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 12px;
+}
+
+.hidden {
+  display: none;
+}
+
+/* Footer */
+.payment-footer {
+  padding: 18px 22px;
+  border-top: 1px solid #e5e7eb;
+  display: flex;
+  justify-content: flex-end;
+  gap: 12px;
+}
+
+/* Buttons */
+.btn-secondary {
+  background: #f1f5f9;
+  color: #334155;
+  border: none;
+  padding: 9px 18px;
+  border-radius: 12px;
+  font-size: 0.85rem;
+  cursor: pointer;
+}
+
+.btn-secondary:hover {
+  background: #e2e8f0;
+}
+
+.btn-primary {
+  background: linear-gradient(135deg, #4e8cff, #2563eb);
+  color: #ffffff;
+  border: none;
+  padding: 9px 22px;
+  border-radius: 12px;
+  font-size: 0.85rem;
+  font-weight: 500;
+  cursor: pointer;
+  box-shadow: 0 10px 24px rgba(37, 99, 235, 0.35);
+}
+
+.btn-primary:hover {
+  transform: translateY(-1px);
+  box-shadow: 0 14px 30px rgba(37, 99, 235, 0.45);
+}
+
+.no-completed-req{
+  text-align: center;
+    padding: 20px;
+    color: #64748b;
+    font-size: 0.9rem;
+}
+
+
+   
+  </style>
+</head>
+
+<body>
+
+  <!-- Sidebar -->
+  <div class="sidebar">
+    <div class="logo-wrap">
+      <div class="logo">CareConnect</div>
+      <div class="logo-sub">Care Seeker Dashboard</div>
+    </div>
+    <div class="nav">
+      <a href="../dashboard/dashboard.html">Dashboard</a>
+      <a href="../careseeker-requests/careseeker-requests.html">My Requests</a>
+      <a href="../assigned-caretaker/assigned-caretaker.html">Assigned Caretakers</a>
+      <a class="active" href="#">Payment</a>
+      <a href="../careseeker-profile/careseeker-profile.html">Profile</a>
+    </div>
+    <div class="logout" onclick="logout()">Logout</div>
+  </div>
+
+
+  <!-- Main -->
+  <div class="main">
+
+    <div class="header">
+      <div class="header-title">
+        <h2>Make Payment</h2>
+      </div>
+    </div>
+
+    <div class="card">
+      <table>
+        <thead>
+          <tr>
+            <th>Request ID</th>
+            <th>Care Type</th>
+            <th>Amount</th>
+            <th>Payment Status</th>
+            <th>Action</th>
+          </tr>
+        </thead>
+        <tbody id="paymentTableBody"></tbody>
+      </table>
+    </div>
+  </div>
+
+
+<!-- ================= PAYMENT POPUP ================= -->
+<div id="paymentModal" class="payment-overlay">
+
+  <div class="payment-card">
+
+    <!-- Header -->
+    <div class="payment-header">
+      <div>
+        <h3>Complete Payment</h3>
+        <p class="subtitle">Secure payment for completed care</p>
+      </div>
+      <button class="close-btn" onclick="closePaymentModal()">×</button>
+    </div>
+
+    <!-- Body -->
+    <div class="payment-body">
+
+      <!-- Amount -->
+      <div class="payment-amount">
+        <span>Amount Payable</span>
+        <strong>₹<span id="payAmount">0</span></strong>
+      </div>
+
+      <!-- Payment Methods -->
+      <div class="payment-methods">
+
+        <label class="payment-method active">
+          <input type="radio" name="paymentMethod" value="CARD" checked />
+          <div class="method-box">
+            <div class="method-icon">💳</div>
+            <div>
+              <div class="method-title">Debit / Credit Card</div>
+              <div class="method-sub">Visa, Mastercard, RuPay</div>
+            </div>
+          </div>
+        </label>
+
+        <label class="payment-method">
+          <input type="radio" name="paymentMethod" value="UPI" />
+          <div class="method-box">
+            <div class="method-icon">📱</div>
+            <div>
+              <div class="method-title">UPI</div>
+              <div class="method-sub">Google Pay, PhonePe, Paytm</div>
+            </div>
+          </div>
+        </label>
+
+      </div>
+
+      <!-- Card Fields (Dummy) -->
+      <div id="cardForm" class="payment-form">
+        <input type="text" placeholder="Card Number" disabled />
+        <div class="form-row">
+          <input type="text" placeholder="MM / YY" disabled />
+          <input type="text" placeholder="CVV" disabled />
+        </div>
+      </div>
+
+      <!-- UPI Fields (Dummy) -->
+      <div id="upiForm" class="payment-form hidden">
+        <input type="text" placeholder="example@upi" disabled />
+      </div>
+
+    </div>
+
+    <!-- Footer -->
+    <div class="payment-footer">
+      <button class="btn-secondary" onclick="closePaymentModal()">Cancel</button>
+      <button class="btn-primary" onclick="confirmPayment()">Pay Now</button>
+    </div>
+
+  </div>
+</div>
+<!-- ================= END POPUP ================= -->
+
+
+
+  <script src="../../../js/api.js"></script>
+  <script src="./make-payment.js"></script>
+</body>
+
+</html>

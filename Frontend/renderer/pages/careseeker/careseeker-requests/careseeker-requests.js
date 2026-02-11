@@ -149,5 +149,5 @@ window.addEventListener('DOMContentLoaded', () => loadRequests());
 
 function logout() {
   localStorage.clear();
-  location.href = "../../common/login.html";
+  location.href = "../../common/login/login.html";
 }

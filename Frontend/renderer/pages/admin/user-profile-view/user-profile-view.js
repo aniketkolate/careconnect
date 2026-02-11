@@ -59,7 +59,7 @@ async function loadUserProfile() {
 
 function logout() {
   localStorage.clear();
-  location.href = "../../common/login.html";
+  location.href = "../../common/login/login.html";
 }
 
 document.addEventListener("DOMContentLoaded", loadUserProfile);

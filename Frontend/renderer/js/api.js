@@ -13,4 +13,4 @@ async function api(endpoint, method, data) {
   });
 
   return res.json();
-}
+} 

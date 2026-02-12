@@ -28,7 +28,7 @@ async function loadDashboardStats() {
 
   } catch (err) {
     console.error('Dashboard stats error:', err);
-    alert('Unable to load dashboard metrics');
+    showToast('Unable to load dashboard metrics',"success");
   }
 }
 

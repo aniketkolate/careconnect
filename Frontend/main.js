@@ -1,7 +1,6 @@
 const { app, BrowserWindow } = require("electron");
 const path = require("path");
 
-// ❌ Disable reload for now (or use it carefully)
 if (process.env.NODE_ENV === "development") {
   try {
     require("electron-reload")(__dirname, {
@@ -14,14 +13,14 @@ if (process.env.NODE_ENV === "development") {
 
 function createWindow() {
   const win = new BrowserWindow({
-    fullscreen: true,
-    frame: false,
+    fullscreen: false,
+    frame: true,
     resizable: true,
     autoHideMenuBar: true,
     webPreferences: {
       preload: path.join(__dirname, "preload.js"),
       nodeIntegration: false,
-      contextIsolation: true 
+      contextIsolation: true
     }
   });
 

@@ -1,7 +1,7 @@
 async function loadUserProfile() {
   try {
     const userId = localStorage.getItem("selectedUserId");
-    if (!userId) return alert("No user selected");
+    if (!userId) return showToast("No user selected",'warning');
 
     const res = await api(`/admin/users/${userId}`, "GET");
     if (!res.success) throw new Error("Failed to load");
@@ -53,7 +53,7 @@ async function loadUserProfile() {
 
   } catch (err) {
     console.error(err);
-    alert("Unable to load profile");
+    showToast("Unable to load profile","error");
   }
 }
 

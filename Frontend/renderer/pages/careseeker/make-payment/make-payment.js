@@ -68,7 +68,7 @@ async function loadCompletedRequests() {
 
   } catch (err) {
     console.error(err);
-    alert('Failed to load completed requests');
+    showToast('Failed to load completed requests', 'error');
   }
 }
 
@@ -91,7 +91,7 @@ async function goToPayment(requestId) {
     document.getElementById('upiForm').classList.add('hidden');
 
   } catch (err) {
-    alert(err.message || 'Failed to load payment details');
+    showToast(err.message || 'Failed to load payment details', 'error');
   }
 }
 
@@ -119,18 +119,23 @@ async function confirmPayment() {
     );
 
     if (!res.success) {
-      alert(res.message || 'Payment failed');
+      showToast(res.message || 'Payment failed', 'error');
       return;
     }
 
-    alert('Payment successful 🎉');
+    showToast('Payment successful 🎉', 'success');
+    setTimeout(() => {
+      closePaymentModal();
+      loadCompletedRequests();
+    }, 800);
+
 
     closePaymentModal();
     loadCompletedRequests();
 
   } catch (err) {
     console.error(err);
-    alert('Something went wrong during payment');
+    showToast('Something went wrong during payment', 'error');
   }
 }
 

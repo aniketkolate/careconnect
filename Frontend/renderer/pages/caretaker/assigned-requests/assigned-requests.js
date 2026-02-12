@@ -135,25 +135,25 @@ async function handleAction(assignmentId, action, row) {
       if (action.toUpperCase() === 'ACCEPT') {
         row.querySelector('.btn-success').innerText = 'Accepted';
         row.querySelector('.btn-success').disabled = true;
-        alert("Care request accepted successfully");
+        showToast("Care request accepted successfully", "success");
         // ✅ reload CURRENT ACTIVE TAB
         const activeTab = getActiveTab();
         loadTable(activeTab);
       }
       if (action.toUpperCase() === 'REJECT') {
-        alert("Care request rejected successfully");
+        showToast("Care request rejected successfully", "success");
         // ✅ reload CURRENT ACTIVE TAB
         const activeTab = getActiveTab();
         loadTable(activeTab);
       }
     } else {
-      alert('Action failed: ' + response.message);
+      showToast('Action failed: ' + response.message, "error");
       buttons.forEach(btn => btn.disabled = false);
     }
 
   } catch (err) {
     console.error(err);
-    alert('Something went wrong!');
+    showToast('Something went wrong!', "error");
     const buttons = row.querySelectorAll('button');
     buttons.forEach(btn => btn.disabled = false);
   }
@@ -222,14 +222,14 @@ async function markAsComplete() {
     const amount = Number(amountInput.value);
 
     if (!amount || amount <= 0) {
-      alert("Please enter a valid amount");
+      showToast("Please enter a valid amount", "warning");
       amountInput.focus();
       return;
     }
 
 
     if (!completingAssignmentId) {
-      alert("Invalid assignment");
+      showToast("Invalid assignment", "error");
       return;
     }
 
@@ -250,14 +250,14 @@ async function markAsComplete() {
     );
 
     if (res.success) {
-      alert("Care request marked as completed");
+      showToast("Care request marked as completed", "success");
       closeCompleteModal();
 
       // reload current active tab
       const activeTab = getActiveTab();
       loadTable(activeTab);
     } else {
-      alert(res.message || "Failed to complete request");
+      showToast(res.message || "Failed to complete request", "error");
     }
 
     btn.disabled = false;
@@ -265,7 +265,7 @@ async function markAsComplete() {
 
   } catch (err) {
     console.error(err);
-    alert("Something went wrong");
+    showToast("Something went wrong", "error");
     const btn = document.querySelector(
       "#completeModal .btn-success"
     );
@@ -299,13 +299,13 @@ async function sendPaymentReminder(careRequestId) {
     );
 
     if (res.success) {
-      alert('Payment reminder sent to care seeker');
+      showToast('Payment reminder sent to care seeker', "success");
     } else {
-      alert(res.message || 'Failed to send reminder');
+      showToast(res.message || 'Failed to send reminder', "error");
     }
   } catch (err) {
     console.error(err);
-    alert('Something went wrong');
+    showToast('Something went wrong', "error");
   }
 }
 

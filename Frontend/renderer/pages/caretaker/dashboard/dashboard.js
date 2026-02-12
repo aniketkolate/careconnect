@@ -119,21 +119,21 @@ async function handleAction(assignmentId, action, row) {
       if (action.toUpperCase() === 'ACCEPT') {
         row.querySelector('.btn-success').innerText = 'Accepted';
         row.querySelector('.btn-success').disabled = true;
-        alert("Care request accepted successfully");
+        showToast("Care request accepted successfully", "success");
         loadPendingAssignments();
       }
       if (action.toUpperCase() === 'REJECT') {
-        alert("Care request rejected successfully");
+        showToast("Care request rejected successfully", "success");
         loadPendingAssignments();
       }
     } else {
-      alert('Action failed: ' + response.message);
+      showToast('Action failed: ' + response.message, "error");
       buttons.forEach(btn => btn.disabled = false);
     }
 
   } catch (err) {
     console.error(err);
-    alert('Something went wrong!');
+    showToast('Something went wrong!', "error");
     const buttons = row.querySelectorAll('button');
     buttons.forEach(btn => btn.disabled = false);
   }

@@ -55,7 +55,7 @@ async function loadRequests(status = '') {
     });
   } catch (err) {
     console.error(err);
-    alert("Failed to load requests: " + err.message);
+    showToast("Failed to load requests: " + err.message, "error");
   }
 }
 
@@ -96,7 +96,7 @@ async function viewRequest(id) {
       data.duration_label || getDuration(data.start_time, data.end_time);
   } catch (err) {
     console.error(err);
-    alert("Unable to load request details");
+    showToast("Unable to load request details", "error");
     closeModal();
   }
 }
@@ -126,16 +126,17 @@ async function confirmDelete() {
     const res = await api(`/seeker/care-request/${deleteRequestId}`, "DELETE");
 
     if (!res.success) {
-      alert(res.message || "Failed to delete request");
+      showToast(res.message || "Failed to delete request", "error");
+      closeDeleteModal();
       return;
     }
 
     closeDeleteModal();
-    alert("Request deleted successfully");
+    showToast("Request deleted successfully", "success");
     loadRequests(); // reload table
   } catch (err) {
     console.error(err);
-    alert("Something went wrong while deleting");
+    showToast("Something went wrong while deleting", "error");
   }
 }
 

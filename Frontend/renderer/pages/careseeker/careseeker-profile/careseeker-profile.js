@@ -6,7 +6,7 @@ async function getProfile() {
     const res = await api("/seeker/profile");
 
     if (!res.success) {
-      alert(res.message || "Failed to load profile");
+      showToast(res.message || "Failed to load profile", "error");
       return;
     }
 
@@ -64,7 +64,7 @@ async function getProfile() {
     switchToReadOnlyMode();
   } catch (err) {
     console.error(err);
-    alert("Something went wrong while loading profile");
+    showToast("Something went wrong while loading profile", "error");
   }
 }
 
@@ -89,15 +89,16 @@ async function updateProfile() {
     const res = await api("/seeker/profile", "PUT", payload);
 
     if (res.success) {
-      alert("Profile updated successfully");
+      
+      showToast("Profile updated successfully", "success");
       switchToReadOnlyMode();
       getProfile(); // refresh data
     } else {
-      alert("Failed to update profile");
+      showToast("Failed to update profile", "error");
     }
   } catch (err) {
     console.error(err);
-    alert("Something went wrong");
+    showToast("Something went wrong", "error");
   }
 }
 

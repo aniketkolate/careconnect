@@ -4,7 +4,7 @@ document.addEventListener("DOMContentLoaded", loadProfile);
 
 async function loadProfile() {
   const res = await api("/taker/profile", "GET");
-  if (!res.success) return alert("Failed to load profile");
+  if (!res.success) return showToast("Failed to load profile", "error");
 
   profileData = res.data;
   const profile = profileData.profile || {};
@@ -57,10 +57,13 @@ async function saveProfile() {
   const res = await api("/taker/profile", "PUT", payload);
 
   if (res.success) {
-    alert("Profile updated successfully ✅");
-    location.reload();
+    showToast("Profile updated successfully", "success");
+    setTimeout(() => {
+      location.reload();
+    }, 1000);
+
   } else {
-    alert(res.message || "Update failed");
+    showToast(res.message || "Update failed", "error");
   }
 }
 

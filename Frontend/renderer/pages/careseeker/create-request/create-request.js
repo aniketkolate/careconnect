@@ -12,7 +12,7 @@ async function submitRequest() {
   try {
     // Validate only required fields
     if (!careType.value || !address.value) {
-      alert("Please fill all required fields.");
+      showToast("Please fill all required fields.", "warning");
       return;
     }
 
@@ -48,16 +48,24 @@ async function submitRequest() {
     const res = await api("/seeker/care-request", "POST", data);
 
     if (res.success) {
-      alert("Care request created successfully!");
-      location.href = "../careseeker-requests/careseeker-requests.html";
+      showToast("Care request created successfully!", "success");
+      setTimeout(() => {
+        location.href = "../careseeker-requests/careseeker-requests.html";
+      }, 800);
+
     } else {
-      alert("Failed to create request: " + res.message);
+      showToast("Failed to create request: " + res.message, "error");
     }
   } catch (err) {
     console.error(err);
-    alert("Something went wrong. Please try again.");
+    showToast("Something went wrong. Please try again.", "error");
   }
 }
+
+document.addEventListener("DOMContentLoaded", () => {
+  const today = new Date().toISOString().split("T")[0];
+  document.getElementById("startDate").setAttribute("min", today);
+});
 
 
 function logout() {

@@ -17,6 +17,6 @@ async function api(endpoint, method = "GET", data = null) {
     return await response.json();
   } catch (err) {
     console.error("API error:", err);
-    alert("Something went wrong");
+    showToast("Something went wrong",'error');
   }
 }

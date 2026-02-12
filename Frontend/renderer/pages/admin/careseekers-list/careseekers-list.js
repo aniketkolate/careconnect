@@ -75,14 +75,12 @@ async function toggleStatus(userId, currentStatus) {
       status: !currentStatus
     });
 
-    alert(
-      `User has been ${!currentStatus ? "activated" : "deactivated"} successfully.`
-    );
+    showToast(`User has been ${!currentStatus ? "activated" : "deactivated"} successfully.`, "success");
 
     loadCareSeekers(); // reload table
   } catch (err) {
     console.error(err);
-    alert(err.message || "Something went wrong while updating status.");
+    showToast(err.message || "Something went wrong while updating status.", "error");
   }
 }
 

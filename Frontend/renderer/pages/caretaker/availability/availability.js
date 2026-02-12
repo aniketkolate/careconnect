@@ -79,7 +79,7 @@ async function loadAvailability() {
 
   } catch (err) {
     console.error(err);
-    alert("Failed to load availability");
+    showToast("Failed to load availability", "error");
   }
 }
 
@@ -93,23 +93,23 @@ async function saveAvailability() {
 
     document.querySelectorAll('input[type="checkbox"]:checked').forEach(cb => {
       availability.push(
-         cb.dataset.day,
+        cb.dataset.day,
       );
     });
 
     const res = await api("/taker/availability", "POST", { availability });
 
     if (res.success) {
-      alert("Availability saved successfully ✅");
+      showToast("Availability saved successfully", "success");
       setEditMode(false);
       loadAvailability();
     } else {
-      alert("Failed to save availability");
+      showToast("Failed to save availability", "error");
     }
 
   } catch (err) {
     console.error(err);
-    alert("Something went wrong");
+    showToast("Something went wrong", "error");
   }
 }
 

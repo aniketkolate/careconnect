@@ -136,11 +136,13 @@ document.getElementById("assignBtn").onclick = async () => {
       caretakerId: selectedCaretaker
     });
 
-    alert("Caretaker assigned successfully ✅");
-    location.reload();
+    showToast("Caretaker assigned successfully", 'success');
+    setTimeout(() => {
+      location.reload();
+    }, 2000)
 
   } catch (err) {
-    alert("Assignment failed ❌");
+    showToast("Assignment failed", "error");
     console.error(err);
   }
 };

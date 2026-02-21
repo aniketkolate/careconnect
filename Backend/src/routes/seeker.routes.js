@@ -62,4 +62,6 @@ router.get('/care-requests/completed', authMiddleware, seekerController.getCompl
 
 router.get('/payments/request/:requestId', authMiddleware, seekerController.getPaymentPopup);
 
+router.get('/notifications', seekerController.getNotifications);
+
 module.exports = router;

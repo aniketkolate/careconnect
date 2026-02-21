@@ -19,16 +19,69 @@ async function loadCareRequests() {
   data.forEach(r => {
     const card = document.createElement("div");
     card.className = "card";
-    card.dataset.id = r.id;
+    card.dataset.id = r.care_request_id;
+
+    const profileImage = r.seeker_profile_image
+      ? r.seeker_profile_image
+      : "https://ui-avatars.com/api/?name=" + encodeURIComponent(r.seeker_name);
 
     card.innerHTML = `
-      <div class="card-title">Request #${r.id}</div>
-      <div class="card-meta">
-        ${r.care_type || "Care Service"} • 
-        ${new Date(r.created_at).toDateString()}
+  <div class="request-header">
+    <div>
+      <div class="request-id">Request #${r.care_request_id}</div>
+      <div class="request-type">${r.care_type}</div>
+    </div>
+    <span class="status-badge status-${r.request_status.toLowerCase()}">
+      ${r.request_status}
+    </span>
+  </div>
+
+  <div class="request-section">
+    <div class="section-title">Service Details</div>
+    <div class="row">
+      <div><strong>Description:</strong> ${r.description}</div>
+    </div>
+    <div class="row two-col">
+      <div><strong>Start:</strong> ${new Date(r.start_time).toLocaleString()}</div>
+      <div><strong>End:</strong> ${new Date(r.end_time).toLocaleString()}</div>
+    </div>
+    <div class="row">
+      <div><strong>Created:</strong> ${new Date(r.request_created_at).toLocaleString()}</div>
+    </div>
+  </div>
+
+  <div class="request-section seeker-section">
+    <div class="section-title">Care Seeker Details</div>
+
+    <div class="seeker-header">
+      <img src="${r.seeker_profile_image ||
+      "https://ui-avatars.com/api/?name=" + encodeURIComponent(r.seeker_name)}" 
+        class="seeker-avatar" />
+      <div>
+        <div class="seeker-name">${r.seeker_name}</div>
+        <div class="seeker-email">${r.seeker_email}</div>
+        <div class="seeker-phone">${r.seeker_phone}</div>
       </div>
-      <span class="badge">Created</span>
-    `;
+    </div>
+
+    <div class="row two-col">
+      <div><strong>Age:</strong> ${r.seeker_age || "-"}</div>
+      <div><strong>Gender:</strong> ${r.seeker_gender || "-"}</div>
+    </div>
+
+    <div class="row">
+      <div><strong>Address:</strong> ${r.seeker_address || "-"}</div>
+    </div>
+
+    <div class="row">
+      <div><strong>Emergency Contact:</strong> ${r.seeker_emergency_contact || "-"}</div>
+    </div>
+
+    <div class="profile-status ${r.is_profile_completed ? 'complete' : 'incomplete'}">
+      ${r.is_profile_completed ? "Profile Complete" : "Profile Incomplete"}
+    </div>
+  </div>
+`;
 
     card.onclick = () => selectRequest(card);
     container.appendChild(card);
@@ -71,8 +124,9 @@ async function loadCaretakers() {
     ${avatarHtml}
 
     <div class="caretaker-info">
-      <div class="card-title">${c.name}</div>
-      <div class="card-meta">📞 ${c.phone}</div>
+  <div class="card-title">${c.name}</div>
+  <div class="card-meta">📧 ${c.email}</div>
+  <div class="card-meta">📞 ${c.phone}</div>
     </div>
   </div>
 

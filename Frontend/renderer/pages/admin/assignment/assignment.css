@@ -220,3 +220,144 @@
     .caretaker-info .card-title {
       font-weight: 600;
     }
+
+    .card {
+      background: #ffffff;
+      border-radius: 12px;
+      padding: 18px;
+      margin-bottom: 16px;
+      box-shadow: 0 4px 14px rgba(0, 0, 0, 0.06);
+      transition: all 0.2s ease;
+      cursor: pointer;
+      border: 1px solid #f1f1f1;
+    }
+
+    .card:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 6px 18px rgba(0, 0, 0, 0.08);
+    }
+
+    .card.active {
+      border: 2px solid #2563eb;
+    }
+
+    .request-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 12px;
+    }
+
+    .request-id {
+      font-weight: 700;
+      font-size: 15px;
+      color: #111827;
+    }
+
+    .request-type {
+      font-size: 13px;
+      color: #6b7280;
+    }
+
+    .status-badge {
+      padding: 6px 10px;
+      font-size: 12px;
+      border-radius: 20px;
+      font-weight: 500;
+      text-transform: capitalize;
+    }
+
+    .status-created {
+      background: #e0f2fe;
+      color: #0284c7;
+    }
+
+    .status-ongoing {
+      background: #fef9c3;
+      color: #ca8a04;
+    }
+
+    .status-completed {
+      background: #dcfce7;
+      color: #16a34a;
+    }
+
+    .status-cancelled {
+      background: #fee2e2;
+      color: #dc2626;
+    }
+
+    .request-section {
+      margin-top: 12px;
+      padding-top: 12px;
+      border-top: 1px solid #f3f4f6;
+    }
+
+    .section-title {
+      font-size: 13px;
+      font-weight: 600;
+      margin-bottom: 8px;
+      color: #374151;
+      text-transform: uppercase;
+    }
+
+    .row {
+      font-size: 13px;
+      color: #4b5563;
+      margin-bottom: 6px;
+    }
+
+    .two-col {
+      display: flex;
+      justify-content: space-between;
+      gap: 10px;
+    }
+
+    .seeker-section {
+      background: #f9fafb;
+      padding: 12px;
+      border-radius: 8px;
+    }
+
+    .seeker-header {
+      display: flex;
+      gap: 12px;
+      align-items: center;
+      margin-bottom: 10px;
+    }
+
+    .seeker-avatar {
+      width: 52px;
+      height: 52px;
+      border-radius: 50%;
+      object-fit: cover;
+    }
+
+    .seeker-name {
+      font-weight: 600;
+      color: #111827;
+    }
+
+    .seeker-email,
+    .seeker-phone {
+      font-size: 12px;
+      color: #6b7280;
+    }
+
+    .profile-status {
+      margin-top: 8px;
+      padding: 6px 10px;
+      font-size: 12px;
+      border-radius: 6px;
+      display: inline-block;
+    }
+
+    .profile-status.complete {
+      background: #dcfce7;
+      color: #15803d;
+    }
+
+    .profile-status.incomplete {
+      background: #fee2e2;
+      color: #b91c1c;
+    }

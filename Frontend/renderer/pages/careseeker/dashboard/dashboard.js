@@ -1,8 +1,3 @@
-// dashboard.js
-
-// Load API helper
-
-// 1️⃣ Load Dashboard Stats
 async function loadDashboard() {
   const res = await api("/seeker/dashboard", "GET");
 
@@ -41,7 +36,7 @@ async function loadRecentRequests() {
   }
 
   // Map API response to table rows
-  res.data.slice(0,4).forEach(req => {
+  res.data.slice(0, 4).forEach(req => {
     // Duration: calculate days / months if needed, here we'll just show start-end
     const startDate = new Date(req.start_time);
     const endDate = new Date(req.end_time);
@@ -84,13 +79,12 @@ async function loadRecentRequests() {
   });
 }
 
-// 3️⃣ Initialize dashboard on page load
 window.addEventListener("DOMContentLoaded", () => {
   loadDashboard();
   loadRecentRequests();
+  loadNotifications();
 });
 
-// Optional: navigation helper
 function go(url) {
   window.location.href = url;
 }
@@ -100,3 +94,37 @@ function logout() {
   location.href = "../../common/login/login.html";
 }
 
+
+async function loadNotifications() {
+  const notifWrapper = document.getElementById('notificationsBody');
+  if (!notifWrapper) return;
+
+  try {
+    const res = await api('/seeker/notifications', 'GET');
+
+    if (!res?.success || !res.data || res.data.length === 0) {
+      notifWrapper.innerHTML = '<div class="no-notification">No notifications to display</div>';
+      return;
+    }
+
+    notifWrapper.innerHTML = '';
+
+    res.data.forEach(item => {
+      notifWrapper.innerHTML += `
+        <div class="notification ">
+          <div class="notif-content">
+            <div class="notif-title">${item.title}</div>
+            <div class="notif-desc">${item.message}</div>
+            <button class="btn-pay" onclick="go('../make-payment/make-payment.html')">
+              Pay Now
+            </button>
+          </div>
+        </div>
+      `;
+    });
+
+  } catch (err) {
+    console.error('Failed to load notifications:', err);
+    notifWrapper.innerHTML = '<div class="no-notification">Failed to load notifications</div>';
+  }
+}

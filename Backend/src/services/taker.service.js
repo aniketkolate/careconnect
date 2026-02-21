@@ -231,20 +231,6 @@ const updateAssignmentStatus = async (takerId, assignmentId, body) => {
     );
   }
 
-  // 4️⃣ Send notification if COMPLETED
-  if (status === 'COMPLETED') {
-    await db.query(
-      `INSERT INTO notifications (user_id, title, message, is_read)
-       VALUES ($1, $2, $3, $4)`,
-      [
-        assignment.seeker_id,
-        'Payment Required',
-        'Please complete payment for care service',
-        false
-      ]
-    );
-  }
-
   return { status };
 };
 
@@ -370,9 +356,9 @@ const sendPaymentReminder = async (takerId, careRequestId) => {
     throw { status: 404, message: 'Invalid request' };
 
   await db.query(
-    `INSERT INTO notifications (user_id,title,message)
-     VALUES ($1,'Payment Reminder','Please complete pending payment')`,
-    [assignment.rows[0].seeker_id]
+    `INSERT INTO notifications (user_id, title, message, care_request_id)
+    VALUES ($1, 'Payment Reminder', 'Please complete pending payment', $2)`,
+    [assignment.rows[0].seeker_id, careRequestId]
   );
 
   return { success: true };

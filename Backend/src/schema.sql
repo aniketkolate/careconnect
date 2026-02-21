@@ -221,3 +221,5 @@ CREATE INDEX idx_assignments_status ON care_assignments(status);
 CREATE INDEX idx_payments_status ON payments(status);
 CREATE INDEX idx_notifications_user ON notifications(user_id);
 
+--newly added
+ALTER TABLE notifications ADD COLUMN care_request_id INT REFERENCES care_requests(id);

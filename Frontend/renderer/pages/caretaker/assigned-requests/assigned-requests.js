@@ -294,7 +294,7 @@ function getPaymentCell(item) {
 async function sendPaymentReminder(careRequestId) {
   try {
     const res = await api(
-      `/taker/payments/${careRequestId}/reminder`,
+      `/taker/payment-reminder/${careRequestId}`,
       'POST'
     );
 

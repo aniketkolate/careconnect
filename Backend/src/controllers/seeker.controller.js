@@ -24,7 +24,7 @@ const getAllCareRequests = async (req, res, next) => {
     console.log("req :", req.user)
     try {
         const data = await seekerService.getAllCareRequests(req.user.id, req.query);
-        return successResponse(res,'Care requests fetched successfully', data);
+        return successResponse(res, 'Care requests fetched successfully', data);
     } catch (err) {
         next(err);
     }
@@ -52,7 +52,7 @@ const updateProfile = async (req, res, next) => {
 const getProfile = async (req, res, next) => {
     try {
         const data = await seekerService.getProfile(req.user.id);
-        return successResponse(res,"Profile details fetched successfully", data);
+        return successResponse(res, "Profile details fetched successfully", data);
     } catch (err) {
         next(err);
     }
@@ -79,7 +79,7 @@ const getRecentRequests = async (req, res, next) => {
 const getAssignedCaretakers = async (req, res, next) => {
     try {
         const data = await seekerService.getAssignedCaretakers(req.user.id);
-        return successResponse(res,"Details fetched successfully.", data);
+        return successResponse(res, "Details fetched successfully.", data);
     } catch (err) {
         next(err);
     }
@@ -107,30 +107,38 @@ const deleteCareRequest = async (req, res, next) => {
 };
 
 const getCompletedRequests = async (req, res) => {
-  try {
-    const data = await seekerService.getCompletedRequestsWithPayment(req.user.id);
-    res.json({
-      success: true,
-      message: 'Completed requests fetched',
-      data
-    });
-  } catch (err) {
-    res.status(500).json({ success: false, message: err.message });
-  }
+    try {
+        const data = await seekerService.getCompletedRequestsWithPayment(req.user.id);
+        res.json({
+            success: true,
+            message: 'Completed requests fetched',
+            data
+        });
+    } catch (err) {
+        res.status(500).json({ success: false, message: err.message });
+    }
 };
 
 const getPaymentPopup = async (req, res) => {
-  try {
-    const data = await seekerService.getPaymentDetails(req.params.requestId);
-    res.json({
-      success: true,
-      data
-    });
-  } catch (err) {
-    res.status(500).json({ success: false, message: err.message });
-  }
+    try {
+        const data = await seekerService.getPaymentDetails(req.params.requestId);
+        res.json({
+            success: true,
+            data
+        });
+    } catch (err) {
+        res.status(500).json({ success: false, message: err.message });
+    }
 };
 
+const getNotifications = async (req, res, next) => {
+    try {
+        const data = await seekerService.getNotifications(req.user.id);
+        return successResponse(res, "Notifications fetched successfully", data);
+    } catch (err) {
+        next(err);
+    }
+};
 
 
 module.exports = {
@@ -146,5 +154,6 @@ module.exports = {
     makePayment,
     deleteCareRequest,
     getCompletedRequests,
-    getPaymentPopup
+    getPaymentPopup,
+    getNotifications
 };

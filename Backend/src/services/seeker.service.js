@@ -378,6 +378,24 @@ const getPaymentDetails = async (careRequestId) => {
     return result.rows[0];
 };
 
+const getNotifications = async (userId) => {
+    const result = await db.query(
+        `SELECT n.id, n.title, n.message, n.is_read, n.created_at
+     FROM notifications n
+     LEFT JOIN payments p ON p.care_request_id = n.care_request_id
+     WHERE n.user_id = $1
+       AND (
+         n.care_request_id IS NULL          -- non-payment notifications, always show
+         OR p.status IS NULL                -- reminder but no payment record yet
+         OR p.status != 'PAID'             -- reminder but payment still pending
+       )
+     ORDER BY n.created_at DESC
+     LIMIT 20`,
+        [userId]
+    );
+    return result.rows;
+};
+
 
 
 module.exports = {
@@ -393,5 +411,6 @@ module.exports = {
     makePayment,
     deleteCareRequest,
     getCompletedRequestsWithPayment,
-    getPaymentDetails
+    getPaymentDetails,
+    getNotifications
 };
